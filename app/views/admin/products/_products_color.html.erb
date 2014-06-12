@@ -1,0 +1,56 @@
+<div class="color_container products_color_number_<%= pc.index %>">
+	<h3>
+	
+	<% if pc.object.new_record? %>
+		<!-- <%= pc.collection_select :color_id, Color.all, :id, :name %> -->
+		<div class="colors_container">
+			<%= pc.select :color_id, color_options_with_extra_link_to_create_color, {}, {class: "colors"} %>
+		</div>
+	<% else %>
+		<%= pc.object.color.name %>
+		<%= pc.hidden_field :color_id %>
+	<% end %>
+	<%= link_to "Delete", remove_admin_products_colors_path(id: pc.object.id, index: pc.index), remote: true, method: :delete %>
+	</h3>
+	
+	
+	<%= pc.label "product_images_attributes[image]", "Add Images" %>
+	<%= pc.file_field "product_images_attributes[image]", multiple: true %>
+
+
+	<ul class="sorted_product_image_list">
+	<% pc.object.product_images.each do |product_image| %>
+		<li id="<%= product_image.id %>">
+			<%= image_tag(product_image.image.url(:thumb)) %>
+			<%= link_to image_tag("delete.png", width: 20), admin_product_image_path(product_image), method: :delete, remote: true %>
+		</li>
+	<% end %>
+	</ul>
+	<%= pc.check_box :mens %> <%= pc.label :mens, "Men's" %>
+	<%= pc.check_box :womens %>  <%= pc.label :womens, "Women's" %><br>
+	
+	<% pc.object.variants.build if pc.object.new_record? %>
+	<%= pc.fields_for :variants do |v| %>
+		<div class="variant_container variant_number_<%= v.index %>">
+			
+			<% if v.object.new_record? %>
+				<%= v.collection_select :size_id, Size.all, :id, :name, {}, {class: "size_select"} %>
+			<% else %>
+				<%= v.object.size.name %>
+				<%= v.hidden_field :size_id %>
+			<% end %>
+			<%= link_to "Delete", remove_admin_variants_path(id: v.object.id, index: v.index), remote: true, method: :delete %><br>
+			
+			<%= v.label :in_stock, "In stock" %>
+			<%= v.check_box :in_stock %><br>
+			<%= v.label :price %>
+			<%= v.text_field :price, class: "variant_price" %><br>
+			<%= v.label :measurements %>
+			<%= v.text_field :measurements %><br>
+			<%= v.label :sku %>
+			<%= v.text_field :sku %><br>
+			<%= v.label :weight %>
+			<%= v.text_field :weight %><br>
+		</div>
+	<% end %>
+</div>

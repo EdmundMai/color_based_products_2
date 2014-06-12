@@ -1,0 +1,76 @@
+<h1>New product</h1>
+
+<%= form_for [:admin, @product] do |form| %>
+	<div class="field">
+		<%= form.label :name %>
+		<%= form.text_field :name %>
+	</div>
+	<div class="field">
+		<%= form.label :short_description %>
+		<%= form.text_area :short_description %>
+	</div>
+	<div class="field">
+		<%= form.label :long_description %>
+		<%= form.text_area :long_description %>
+	</div>
+	
+	<div class="field">
+		<%= form.label :category_id, "Category" %>
+		<%= form.collection_select :category_id, Category.all, :id, :name %>
+	</div>
+	
+	<div class="field vendor_container">
+		<%= form.label :vendor_id, "Vendor" %>
+		<%= form.select :vendor_id, vendor_options_with_extra_link_to_create_vendor(form.object.vendor_id) %>
+	</div>
+	
+	<div class="field material_container">
+		<%= form.object.material_id%>
+		<%= form.label :material_id, "Material" %>
+		<%= form.select :material_id, material_options_with_extra_link_to_create_material(form.object.material_id) %>
+	</div>
+	
+	<div class="field shape_container">
+		<%= form.label :shape_id, "Shape" %>
+		<%= form.select :shape_id, shape_options_with_extra_link_to_create_shape(form.object.shape_id) %>
+	</div>
+	
+	<div class="field">
+		<%= form.label :taxable %>
+		<%= form.check_box :taxable, checked: true %>
+	</div>
+	
+	<h3>Variant Generator</h3>
+	<div class="field">
+		<%= label_tag :price %>
+		<%= text_field_tag :price, "0.00" %>
+	</div>
+	
+	<div class="sizes_container">
+		<%= render "size" %>
+	</div>
+	
+	<%= link_to "Add Size", add_size_admin_products_path, remote: true %>
+	<div class="colors_container">
+		<%= render :partial => "color" %>
+	</div>
+	<span class="add_color"><%= link_to "Add Color", add_color_admin_products_path, remote: true %></span><br>
+	
+	
+	<%= link_to "Generate", generate_variants_admin_products_path, id: "generate_variants_link"  %><br>
+	
+	<div class="variant_container"></div>
+	
+	<div class="field">
+		<%= form.label :page_title %>
+		<%= form.text_field :page_title %>
+	</div>
+	<div class="field">
+		<%= form.label :meta_description %>
+		<%= form.text_area :meta_description %>
+	</div>
+
+	
+	<%= form.submit %>
+	
+<% end %>

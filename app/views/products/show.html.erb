@@ -1,0 +1,16 @@
+<h3><%= @product.name %></h3>
+
+<% @product.products_colors.each do |pc| %>
+	<div>
+		<%= pc.color.name %>
+	
+		<% pc.variants.each do |variant| %>
+			<%= form_tag add_to_cart_checkout_path, method: :post do %>
+			<%= variant.size.name %>
+			<%= hidden_field_tag "quantity", 1 %>
+			<%= hidden_field_tag "variant_id", variant.id %>
+			<%= submit_tag "Add to cart" %>
+			<% end %>
+		<% end %>
+	</div>
+<% end %>

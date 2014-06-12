@@ -1,0 +1,12 @@
+<% if @payment_info.errors.present? %>
+	$(".payment_info_errors").empty();
+	<% @payment_info.errors.full_messages.each do |error_message| %>
+		$(".payment_info_errors").append("<li><%= error_message %></li>");
+	<% end %>	
+	jQuery('html,body').animate({scrollTop:0},300);
+<% else %>
+	$(".payment_info_errors").empty();
+	$(".payment_info_first_part :input").attr("disabled", true);
+	$(".payment_info_second_part :input").attr("disabled", false);
+	$(".order_fees_div").html("<%=j render partial: 'order_fees', locals: {order: @payment_info.order} %>");
+<% end %>

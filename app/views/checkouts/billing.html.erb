@@ -1,0 +1,139 @@
+<%= form_for @payment_info, url: update_billing_checkout_path, remote: true, method: :put do |f| %>
+	<ul class="payment_info_errors">
+	<% @payment_info.errors.full_messages.each do |error| %>
+		<li><%= error %></li>
+	<% end %>
+	</ul>
+	
+	<div class="payment_info_first_part">
+	<% unless current_user %>
+	<h3>User Information</h3>
+	<div>
+		<%= f.label :email %>
+		<%= f.text_field :email %>
+	</div>		
+	
+	<div>
+		<%= f.label :create_an_account %>
+		<%= f.check_box :create_an_account %>
+	</div>
+	
+	<div class="payment_info_password_fields">
+		<%= f.label :password %>
+		<%= f.password_field :password %>
+	</div>
+	<% end %>
+	
+	<h3>Shipping Address</h3>
+	<div>
+	<%= f.label :shipping_address_first_name, "First Name" %>
+	<%= f.text_field :shipping_address_first_name %>
+	</div>
+	<div>
+	<%= f.label :shipping_address_last_name, "Last Name" %>
+	<%= f.text_field :shipping_address_last_name %>
+	</div>
+	<div>
+	<%= f.label :shipping_address_street_address, "Street Address" %>
+	<%= f.text_field :shipping_address_street_address %>
+	</div>
+	<div>
+	<%= f.label :shipping_address_street_address2, "Apt/Suite" %>
+	<%= f.text_field :shipping_address_street_address2 %>
+	</div>
+	<div>
+	<%= f.label :shipping_address_city, "City" %>
+	<%= f.text_field :shipping_address_city %>
+	</div>
+	<div>
+	<%= f.label :shipping_address_state_id, "State" %>
+	<%= f.collection_select :shipping_address_state_id, State.all, :id, :short_name %>
+	</div>
+	<div>
+	<%= f.label :shipping_address_zip_code, "Zip Code" %>
+	<%= f.text_field :shipping_address_zip_code %>
+	</div>
+	<div>
+	<%= f.label :shipping_address_phone_number, "Phone Number" %>
+	<%= f.text_field :shipping_address_phone_number %>
+	</div>
+	
+	
+	<h3>Billing Address</h3>
+	<div>
+	<%= f.label :billing_address_first_name, "First Name" %>
+	<%= f.text_field :billing_address_first_name %>
+	</div>
+	<div>
+	<%= f.label :billing_address_last_name, "Last Name" %>
+	<%= f.text_field :billing_address_last_name %>
+	</div>
+	<div>
+	<%= f.label :billing_address_street_address, "Street Address" %>
+	<%= f.text_field :billing_address_street_address %>
+	</div>
+	<div>
+	<%= f.label :billing_address_street_address2, "Apt/Suite" %>
+	<%= f.text_field :billing_address_street_address2 %>
+	</div>
+	<div>
+	<%= f.label :billing_address_city, "City" %>
+	<%= f.text_field :billing_address_city %>
+	</div>
+	<div>
+	<%= f.label :billing_address_state_id, "State" %>
+	<%= f.collection_select :billing_address_state_id, State.all, :id, :short_name %>
+	</div>
+	<div>
+	<%= f.label :billing_address_zip_code, "Zip Code" %>
+	<%= f.text_field :billing_address_zip_code %>
+	</div>
+	<div>
+	<%= f.label :billing_address_phone_number, "Phone Number" %>
+	<%= f.text_field :billing_address_phone_number %>
+	</div>
+	
+	<h3>Credit Card</h3>
+	<div>
+	<%= f.label :credit_card_number, "Card Number" %>
+	<%= f.text_field :credit_card_number, autocomplete: 'off' %>
+	</div>
+	<div>
+	<%= f.label :credit_card_exp_mm, "Expiration Date" %>
+	<%= select_month((f.object.credit_card_exp_mm.try(:to_i) || Date.today), {use_two_digit_numbers: true}, name: "payment_info[credit_card_exp_mm]" ) %>
+	<%= select_year((f.object.credit_card_exp_yyyy.try(:to_i) || Date.today), {}, start_year: Date.today.year, end_year: Date.today.year+10, name: "payment_info[credit_card_exp_yyyy]" )%>
+	</div>
+	<div>
+	<%= f.label :credit_card_cvv, "CVV" %>
+	<%= f.text_field :credit_card_cvv, autocomplete: 'off', value: '' %>
+	</div>
+	
+	<%= f.submit "Review" %>
+	</div>
+
+<% end %>
+
+
+
+<div class="payment_info_second_part">
+<%= submit_tag "Edit", id: "edit_payment_info_button" %>
+
+<%= form_tag submit_order_checkout_path, remote: true do %>
+<%= hidden_field_tag "credit_card[order_id]", @payment_info.order.id %>
+<% @payment_info.user.cart.cart_items.each do |cart_item| %>
+	<div>
+		Product Name: <%= cart_item.variant.product.name %>
+		Size: <%= cart_item.variant.size.name %>
+		Quantity: <%= cart_item.quantity %>
+		Price: <%= humanized_money_with_symbol(cart_item.variant.price) %>
+	</div>
+	
+<% end %>
+
+<div class="order_fees_div">
+</div>
+
+<div class="credit_card_inputs">
+</div>
+<%= submit_tag "Submit Order", id: "submit_order_button" %>
+<% end %>

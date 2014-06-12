@@ -1,0 +1,15 @@
+<% current_or_guest_user.cart.cart_items.each do |cart_item| %>
+	<div class="cart_item_<%= cart_item.id %>">
+		Product Name: <%= cart_item.variant.product.name %>
+		Size: <%= cart_item.variant.size.name %>
+		Quantity: <%= cart_item.quantity %>
+		Price: <%= humanized_money_with_symbol(cart_item.variant.price) %>
+		<%= link_to "X", cart_item_path(cart_item), method: :delete %>
+	</div>
+<% end %>
+
+<% if current_or_guest_user.cart.cart_items.present? %>
+	<%= link_to "Checkout", billing_checkout_path %>
+<% else %>
+	<%= link_to "Continue Shopping", products_path %>
+<% end %>

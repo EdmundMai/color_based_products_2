@@ -1,0 +1,67 @@
+  <table class="variants_table">
+    <thead>
+			<th>Color</th>
+      <th>Section</th>
+			<th>Size</th>
+      <th>Price</th>
+      <th>Measurements</th>
+      <th>SKU</th>
+      <th>Weight</th>
+    </thead>
+
+		<% products_colors.each_with_index do |products_color, pc_index| %>
+		<tr>
+			<td><%= products_color.color.name %></td>
+			<td>
+				<%= check_box_tag "product[products_colors_attributes][#{pc_index}][mens]", 1, products_color.mens? %> Men's
+				<%= check_box_tag "product[products_colors_attributes][#{pc_index}][womens]", 1, products_color.womens? %> Women's
+			</td>
+			<%= hidden_field_tag "product[products_colors_attributes][#{pc_index}][color_id]", products_color.color_id %>
+		
+			
+			<% products_color.variants.each_with_index do |variant, v_index| %>
+				<% if v_index == 0 %>
+						<td>
+							<%= select_tag "product[products_colors_attributes][#{pc_index}][variants_attributes][#{v_index}][size_id]", options_from_collection_for_select(Size.all, :id, :name, variant.size_id) %>
+						</td>
+						<td>
+							<%= text_field_tag "product[products_colors_attributes][#{pc_index}][variants_attributes][#{v_index}][price]", variant.price %>
+						</td>
+						<td>
+							<%= text_field_tag "product[products_colors_attributes][#{pc_index}][variants_attributes][#{v_index}][measurements]", variant.measurements %>
+						</td>
+						<td>
+							<%= text_field_tag "product[products_colors_attributes][#{pc_index}][variants_attributes][#{v_index}][sku]", variant.sku %>
+						</td>
+						<td>
+							<%= text_field_tag "product[products_colors_attributes][#{pc_index}][variants_attributes][#{v_index}][weight]", variant.weight %>
+						</td>
+					</tr>
+				<% else %>
+				<tr>
+					<td></td>
+					<td></td>
+					<td>
+						<%= select_tag "product[products_colors_attributes][#{pc_index}][variants_attributes][#{v_index}][size_id]", options_from_collection_for_select(Size.all, :id, :name, variant.size_id) %>
+					</td>
+					<td>
+						<%= text_field_tag "product[products_colors_attributes][#{pc_index}][variants_attributes][#{v_index}][price]", variant.price %>
+					</td>
+					<td>
+						<%= text_field_tag "product[products_colors_attributes][#{pc_index}][variants_attributes][#{v_index}][measurements]", variant.measurements %>
+					</td>
+					<td>
+						<%= text_field_tag "product[products_colors_attributes][#{pc_index}][variants_attributes][#{v_index}][sku]", variant.sku %>
+					</td>
+					<td>
+						<%= text_field_tag "product[products_colors_attributes][#{pc_index}][variants_attributes][#{v_index}][weight]", variant.weight %>
+					</td>
+				</tr>
+				<% end %>
+
+			<% end %>
+		</tr>
+    <% end %>
+  </table>
+
+

@@ -1,0 +1,6 @@
+<div class="color_inputs">
+<%= label_tag "Color" %>
+<%= select_tag :color, color_options_with_extra_link_to_create_color, class: "colors" %>
+<%= check_box_tag "gender[]", "men", true, id: nil, class: "genders" %> Men
+<%= check_box_tag "gender[]", "women", true, class: "genders" %> Women
+</div>

@@ -1,0 +1,25 @@
+== README
+
+Products CMS for creating color based products (clothes, paint, glasses, etc), with a single page checkout 
+(support for guest and authenticated user checkout).
+
+Payment processor is USAePay, but connection has been stubbed to return true for now. To use it properly, make an
+account and edit the usaepay_wrapper class to include credentials and to make actual request in the "authorize" method.
+If this happens, cucumber and rspec tests will have to be updated to mock the requests. If USAePay is not the
+payment processor of your choice, it is easy to replace it with something else, since I structured everything
+so that it is only instantiated once within the controller when the user presses submit order. So in the 
+checkouts_controller, just go to the submit_order action and replace it.
+
+Shipping is set to 0 for now. It's also easy to inject an object to calculate shipping. Just go to the purchase
+model and edit the calculate_shipping method so that it uses a service object of your choice.
+
+
+Issues that you might come across:
+
+Taxes revolve around New York state. So this might be an issue if you are doing business elsewhere. In order to change
+this behavior, you'll have to change two things: the TaxValidator service object and the calculate_tax method
+in Purchase.
+
+Ruby 2.0
+Rails 4
+

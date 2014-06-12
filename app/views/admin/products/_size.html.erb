@@ -1,0 +1,8 @@
+<div class="size_inputs">
+<%= label_tag "Size" %>
+<%= select_tag :size, options_from_collection_for_select(Size.all, :id, :name), id: nil, class: "sizes" %>
+<%= label_tag "Measurements" %>
+<%= text_field_tag :measurements, nil, id: nil, class: "measurements" %>
+<%= label_tag "Weight (LBS)" %>
+<%= text_field_tag :weight, "0.25", id: nil, class: "weight" %>
+</div>

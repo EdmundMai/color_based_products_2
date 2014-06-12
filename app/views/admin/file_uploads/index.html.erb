@@ -1,0 +1,7 @@
+
+
+<%= form_tag update_taxes_admin_file_uploads_path, multipart: true do %>
+	<%= label_tag :tax_rates, "Tax rates" %>
+	<%= file_field_tag :tax_rates %>
+	<%= submit_tag "Update Taxes"%>
+<% end %>

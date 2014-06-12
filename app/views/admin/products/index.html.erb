@@ -1,0 +1,6 @@
+<div>
+	<%= link_to "New product", new_admin_product_path %>
+</div>
+<% @products.each_with_index do |product, index| %>
+	<%= index+1 %>. <%= link_to product.name, edit_admin_product_path(product) %><br>
+<% end %>

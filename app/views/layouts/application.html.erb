@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ilook</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+	<%= link_to "Homepage", root_path %>
+	<% if current_user %>
+		<% if current_user.has_role?(:admin) %>
+			<%= link_to "Dashboard", admin_path %>
+		<% end %>
+		<%= link_to "Log out", destroy_user_session_path, method: :delete %>
+	<% else %>
+		<%= link_to "Log in", new_user_session_path %>
+	<% end %>
+	<%= link_to "Cart", checkout_path %>
+	
+  <p class="notice"><%= notice %></p>
+  <p class="alert"><%= alert %></p>
+
+<%= yield %>
+
+</body>
+</html>
